@@ -7,4 +7,25 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    network_mode: "bridge"
+    networks:
+      - my-network
+    volumes:
+      - app-data:/app/data  # Named volume to persist data
+      - ./config:/app/config:ro  # Bind mount for read-only config files
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+    security_opt:
+      - no-new-privileges:true
+    read_only: true  # Set root filesystem as read-only for immutability
+    tmpfs:
+      - /tmp  # Use tmpfs for temporary files, enhancing security and performance
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  app-data:

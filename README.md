@@ -12,3 +12,21 @@
 10. then tagged it using - docker tag docker-demo vaishno10796/docker-demo:latest
 11. then pushed the image in my docker hub account - docker push vaishno10796/docker-demo:latest
 12. https://github.com/VaishnavNagarro/docker-demo
+
+#============================== Advanced assignment ===================================
+1. I had defined a network with name "my-network" in docker compose file so it will be created automatically.
+2. To inspect the network - docker network inspect my-network
+3. I had created volumes with name "app-data" in docker compose file.
+4. To inspect volumes - docker volume inspect app-data
+5. For backup - docker run --rm -v app-data:/data -v $(pwd):/backup busybox tar cvf /backup/app-data-backup.tar /data
+6. To restore - docker run --rm -v app-data:/data -v $(pwd):/backup busybox tar xvf /backup/app-data-backup.tar -C /
+7. To audit - docker run -it --net host --pid host --cap-add audit_control \
+   --label docker_bench_security \
+   --security-opt no-new-privileges \
+   --volume /var/run/docker.sock:/var/run/docker.sock \
+   --volume /etc:/etc \
+   --volume /usr/lib/systemd:/usr/lib/systemd \
+   --volume /var/lib/docker:/var/lib/docker \
+   --volume /boot:/boot \
+   --volume /usr/bin/docker-containerd:/usr/bin/docker-containerd \
+   docker/docker-bench-security
